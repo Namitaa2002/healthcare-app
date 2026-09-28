@@ -1,0 +1,595 @@
+
+/* =========================================
+   ADMIN PATIENTS — PREMIUM DASHBOARD STYLE
+========================================= */
+
+.admin-patients-page {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 4px 0 60px;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.admin-patients-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.admin-patients-header > div:first-child {
+  min-width: 0;
+}
+
+.admin-patients-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  color: #53737a;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.admin-patients-eyebrow::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #5d8992;
+}
+
+.admin-patients-header h1 {
+  margin: 0;
+  color: #172033;
+  font-size: 32px;
+  font-weight: 750;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.admin-patients-header p {
+  max-width: 620px;
+  margin: 8px 0 0;
+  color: #737e8d;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* =========================================
+   PATIENT COUNT
+========================================= */
+
+.admin-patient-count {
+  flex: 0 0 auto;
+  min-width: 112px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #dfe6e8;
+  border-radius: 10px;
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f8fbfb 100%
+    );
+  color: #315f69;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow:
+    0 4px 14px rgba(28, 55, 65, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.admin-patient-count svg {
+  flex: 0 0 auto;
+}
+
+/* =========================================
+   ERROR
+========================================= */
+
+.admin-patients-alert {
+  position: relative;
+  margin-bottom: 20px;
+  padding: 13px 16px 13px 18px;
+  overflow: hidden;
+  border: 1px solid #efd0d0;
+  border-radius: 9px;
+  background: #fff8f8;
+  color: #a72e2e;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.admin-patients-alert::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: #c74a4a;
+}
+
+/* =========================================
+   MAIN CARD
+========================================= */
+
+.admin-patients-card {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #dfe5e8;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow:
+    0 10px 30px rgba(28, 45, 56, 0.055),
+    0 2px 7px rgba(28, 45, 56, 0.035);
+}
+
+/* =========================================
+   CARD HEADER
+========================================= */
+
+.admin-patients-card-header {
+  min-height: 78px;
+  padding: 19px 23px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e8edef;
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fbfcfc 100%
+    );
+}
+
+.admin-patients-card-header .admin-patients-eyebrow {
+  margin-bottom: 5px;
+}
+
+.admin-patients-card-header h2 {
+  margin: 0;
+  color: #1c2635;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* =========================================
+   PATIENT LIST
+========================================= */
+
+.admin-patients-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================
+   PATIENT ROW
+========================================= */
+
+.admin-patient-item {
+  position: relative;
+  min-width: 0;
+  padding: 19px 23px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid #edf0f2;
+  background: #ffffff;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-patient-item:last-child {
+  border-bottom: none;
+}
+
+.admin-patient-item:hover {
+  z-index: 1;
+  background: #fbfdfd;
+  box-shadow:
+    inset 3px 0 0 #71959b,
+    0 4px 16px rgba(36, 79, 92, 0.045);
+}
+
+/* =========================================
+   AVATAR
+========================================= */
+
+.admin-patient-avatar {
+  position: relative;
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d9e7e9;
+  border-radius: 13px;
+  background:
+    linear-gradient(
+      145deg,
+      #f3f8f8 0%,
+      #e8f1f2 100%
+    );
+  color: #315f69;
+  box-shadow:
+    0 3px 8px rgba(49, 95, 105, 0.08);
+}
+
+.admin-patient-avatar::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: #4fa06c;
+}
+
+/* =========================================
+   PATIENT INFORMATION
+========================================= */
+
+.admin-patient-info {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.admin-patient-title-row {
+  min-width: 0;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.admin-patient-title-row h3 {
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: #1d2736;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================
+   STATUS
+========================================= */
+
+.admin-patient-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  font-size: 9px;
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+.admin-patient-status.active {
+  border-color: #d7ecde;
+  background: #f0f9f3;
+  color: #287447;
+}
+
+.admin-patient-status.active::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #4fa06c;
+}
+
+.admin-patient-status.inactive {
+  border-color: #e5e7ea;
+  background: #f7f7f8;
+  color: #777f8a;
+}
+
+/* =========================================
+   CONTACT DETAILS
+========================================= */
+
+.admin-patient-details {
+  margin-bottom: 9px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.admin-patient-details span {
+  max-width: 290px;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  color: #6b7584;
+  font-size: 11px;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-patient-details svg {
+  flex: 0 0 auto;
+  color: #87929e;
+}
+
+/* =========================================
+   META INFORMATION
+========================================= */
+
+.admin-patient-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.admin-patient-meta span {
+  padding: 4px 8px;
+  border: 1px solid #e9edef;
+  border-radius: 5px;
+  background: #f8fafb;
+  color: #737d8b;
+  font-size: 9px;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+/* =========================================
+   APPOINTMENT BOX
+========================================= */
+
+.admin-patient-appointment {
+  flex: 0 0 auto;
+  min-width: 112px;
+  min-height: 56px;
+  padding: 9px 13px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #e2e8ea;
+  border-radius: 9px;
+  background:
+    linear-gradient(
+      135deg,
+      #fbfcfc 0%,
+      #f6f9f9 100%
+    );
+  color: #315f69;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.admin-patient-appointment svg {
+  flex: 0 0 auto;
+  color: #5d858d;
+}
+
+.admin-patient-appointment > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.admin-patient-appointment span {
+  color: #8b949f;
+  font-size: 8px;
+  font-weight: 750;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-patient-appointment strong {
+  color: #273142;
+  font-size: 15px;
+  font-weight: 750;
+  line-height: 1;
+}
+
+/* =========================================
+   LOADING
+========================================= */
+
+.admin-patients-loading {
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: #737e8d;
+  font-size: 13px;
+}
+
+.admin-patients-loading-icon {
+  animation: adminPatientsSpin 0.9s linear infinite;
+}
+
+@keyframes adminPatientsSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.admin-patients-empty {
+  min-height: 260px;
+  padding: 40px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.admin-patients-empty-icon {
+  width: 54px;
+  height: 54px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #dce9eb;
+  border-radius: 12px;
+  background: #f0f6f7;
+  color: #315f69;
+}
+
+.admin-patients-empty h3 {
+  margin: 0 0 6px;
+  color: #273142;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.admin-patients-empty p {
+  max-width: 420px;
+  margin: 0;
+  color: #818a98;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 950px) {
+  .admin-patient-item {
+    align-items: flex-start;
+  }
+
+  .admin-patient-appointment {
+    margin-left: auto;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+  .admin-patients-page {
+    padding: 2px 0 45px;
+  }
+
+  .admin-patients-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .admin-patient-item {
+    padding: 17px;
+    flex-wrap: wrap;
+  }
+
+  .admin-patient-info {
+    width: calc(100% - 62px);
+    flex: 1 1 calc(100% - 62px);
+  }
+
+  .admin-patient-appointment {
+    width: calc(100% - 62px);
+    margin-left: 62px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+  .admin-patients-header h1 {
+    font-size: 27px;
+  }
+
+  .admin-patients-header p {
+    font-size: 12px;
+  }
+
+  .admin-patients-card-header {
+    min-height: 70px;
+    padding: 16px;
+  }
+
+  .admin-patient-item {
+    padding: 15px;
+  }
+
+  .admin-patient-details {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .admin-patient-details span {
+    max-width: 100%;
+  }
+
+  .admin-patient-meta {
+    gap: 5px;
+  }
+}
+
+
+/* =========================================
+   PATIENT PAGE HEADER ALIGNMENT
+========================================= */
+
+.admin-patients-header {
+  padding-left: 18px;
+  padding-right: 18px;
+  box-sizing: border-box;
+}
+
+.admin-patients-card {
+  margin-left: 18px;
+  width: calc(100% - 18px);
+  box-sizing: border-box;
+}
+
+@media (max-width: 700px) {
+  .admin-patients-header {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .admin-patients-card {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+

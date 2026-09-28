@@ -1,0 +1,509 @@
+/* ================= SETTINGS PAGE ================= */
+
+.settings-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.settings-card {
+  background: #ffffff;
+  border: 1px solid #e5eaf1;
+  border-radius: 16px;
+  padding: 22px 24px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.025);
+}
+
+.settings-card h3 {
+  margin: 0 0 18px;
+  color: #172033;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* ================= SETTINGS ITEM ================= */
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 15px 0;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.settings-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.settings-item-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.settings-item-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #f4f8ff;
+  color: #2563eb;
+}
+
+.settings-item strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.settings-item p {
+  margin: 0;
+  color: #8a96a6;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* ================= SETTINGS BUTTON ================= */
+
+.settings-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 15px;
+  border: 1px solid #dbe5f1;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.settings-btn:hover {
+  border-color: #2563eb;
+  background: #f4f8ff;
+}
+
+/* ================= SETTINGS SWITCH ================= */
+
+.settings-switch {
+  position: relative;
+  display: inline-flex;
+  width: 38px;
+  height: 21px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.settings-switch input {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.settings-switch-slider {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: #d7dee8;
+  transition: 0.2s ease;
+}
+
+.settings-switch-slider::before {
+  content: "";
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  left: 2px;
+  top: 2px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
+  transition: 0.2s ease;
+}
+
+.settings-switch input:checked + .settings-switch-slider {
+  background: #2563eb;
+}
+
+.settings-switch input:checked + .settings-switch-slider::before {
+  transform: translateX(17px);
+}
+
+.settings-switch input:disabled + .settings-switch-slider {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ================= ACCOUNT ACTIONS ================= */
+
+.settings-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.settings-btn.logout-btn {
+  color: #475569;
+}
+
+.settings-btn.logout-btn:hover {
+  border-color: #94a3b8;
+  background: #f8fafc;
+}
+
+.settings-btn.danger {
+  border-color: #fecaca;
+  background: #ffffff;
+  color: #dc2626;
+}
+
+.settings-btn.danger:hover {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+/* ================= SUCCESS / ERROR ================= */
+
+.settings-success,
+.settings-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.settings-success {
+  border: 1px solid #bbf7d0;
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.settings-error {
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+/* ================= LOADING ================= */
+
+.settings-loading {
+  padding: 40px 20px;
+  border: 1px solid #e5eaf1;
+  border-radius: 16px;
+  background: #ffffff;
+  color: #8a96a6;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* ================= PASSWORD MODAL ================= */
+
+.password-modal {
+  max-width: 430px;
+  text-align: left;
+}
+
+.settings-modal-header {
+  position: relative;
+  padding-right: 32px;
+}
+
+.settings-modal-header h3 {
+  margin: 0 0 8px;
+  color: #172033;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.settings-modal-header p {
+  margin: 0;
+  color: #7b8798;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.settings-modal-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.settings-modal-header .settings-modal-icon {
+  margin: 0 0 14px;
+}
+
+.settings-modal-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.settings-modal-close:hover {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.settings-modal-close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ================= PASSWORD FORM ================= */
+
+.password-form {
+  margin-top: 22px;
+}
+
+.password-field {
+  margin-bottom: 16px;
+}
+
+.password-field label {
+  display: block;
+  margin-bottom: 7px;
+  color: #334155;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper input {
+  width: 100%;
+  height: 40px;
+  padding: 0 42px 0 12px;
+  border: 1px solid #dbe5f1;
+  border-radius: 9px;
+  outline: none;
+  background: #ffffff;
+  color: #334155;
+  font-family: inherit;
+  font-size: 11px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.password-input-wrapper input::placeholder {
+  color: #a1acba;
+}
+
+.password-input-wrapper input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+.password-input-wrapper button {
+  position: absolute;
+  right: 4px;
+  width: 34px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.password-input-wrapper button:hover {
+  background: #f8fafc;
+  color: #475569;
+}
+
+/* ================= MODAL ================= */
+
+.settings-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+}
+
+.settings-modal {
+  width: 100%;
+  max-width: 400px;
+  padding: 28px;
+  border: 1px solid #e5eaf1;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+  text-align: center;
+}
+
+.settings-modal h3 {
+  margin: 0 0 8px;
+  color: #172033;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.settings-modal > p {
+  margin: 0;
+  color: #7b8798;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* ================= MODAL ACTIONS ================= */
+
+.settings-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.settings-modal-cancel,
+.settings-modal-confirm {
+  min-width: 90px;
+  padding: 9px 16px;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.settings-modal-cancel {
+  border: 1px solid #dbe5f1;
+  background: #ffffff;
+  color: #475569;
+}
+
+.settings-modal-cancel:hover {
+  background: #f8fafc;
+}
+
+.settings-modal-confirm {
+  border: 1px solid #dc2626;
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.settings-modal-confirm:hover {
+  border-color: #b91c1c;
+  background: #b91c1c;
+}
+
+.settings-modal-confirm.password-confirm {
+  border-color: #2563eb;
+  background: #2563eb;
+}
+
+.settings-modal-confirm.password-confirm:hover {
+  border-color: #1d4ed8;
+  background: #1d4ed8;
+}
+
+.settings-modal-cancel:disabled,
+.settings-modal-confirm:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ================= DANGER ICON ================= */
+
+.settings-modal-icon.danger-icon {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 700px) {
+  .settings-card {
+    padding: 18px;
+  }
+
+  .settings-item {
+    align-items: flex-start;
+  }
+
+  .settings-item-content {
+    align-items: flex-start;
+  }
+
+  .settings-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .settings-actions .settings-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-item {
+    gap: 12px;
+  }
+
+  .settings-item strong {
+    font-size: 12px;
+  }
+
+  .settings-item p {
+    font-size: 10px;
+  }
+
+  .settings-modal {
+    padding: 22px;
+  }
+
+  .settings-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .settings-modal-cancel,
+  .settings-modal-confirm {
+    width: 100%;
+  }
+
+  .password-modal {
+    max-width: 100%;
+  }
+}

@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import path from "path";
 
 import organizationRoutes from "./routes/organizationRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -13,6 +14,8 @@ import appointmentRoutes from "./routes/appointmentRoutes.js";
 import stripeRoutes from "./routes/stripeRoutes.js";
 import settingsRoutes from "./routes/settingsRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js";
 
 const app = express();
 
@@ -20,6 +23,12 @@ const app = express();
 app.use(cors());
 app.use("/api/stripe/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
+app.use(
+  "/uploads",
+  express.static(
+    path.join(process.cwd(), "uploads")
+  )
+);
 
 // API routes
 app.use("/api/organizations", organizationRoutes);
@@ -34,6 +43,8 @@ app.use("/api/appointments", appointmentRoutes);
 app.use("/api/stripe", stripeRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/chat", chatRoutes);
 
 // Health check
 app.get("/", (req, res) => {

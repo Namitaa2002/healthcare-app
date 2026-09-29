@@ -1,15 +1,12 @@
-
 import { useEffect, useMemo, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import {
+  Link,
+} from "react-router-dom";
 
 import {
-  LayoutDashboard,
   CalendarPlus,
   CalendarDays,
   CreditCard,
-  UserRound,
-  Settings,
-  LogOut,
   ChevronRight,
   Stethoscope,
   CheckCircle2,
@@ -17,7 +14,6 @@ import {
   CalendarCheck2,
   ArrowUpRight,
   HeartPulse,
-  Activity,
   MapPin,
   Clock3,
   Loader2,
@@ -26,20 +22,19 @@ import {
 
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
+
 import "../../styles/patientDashboard.css";
 
 function Dashboard() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   const patientName = user?.name || "Patient";
 
   const [appointments, setAppointments] = useState([]);
-  const [loadingAppointments, setLoadingAppointments] = useState(true);
-  const [appointmentError, setAppointmentError] = useState("");
-
-  const handleLogout = () => {
-    logout();
-  };
+  const [loadingAppointments, setLoadingAppointments] =
+    useState(true);
+  const [appointmentError, setAppointmentError] =
+    useState("");
 
   // =========================================
   // FETCH PATIENT APPOINTMENTS
@@ -55,7 +50,10 @@ function Dashboard() {
 
         setAppointments(response.data?.data || []);
       } catch (error) {
-        console.error("Fetch dashboard appointments error:", error);
+        console.error(
+          "Fetch dashboard appointments error:",
+          error
+        );
 
         setAppointments([]);
 
@@ -76,14 +74,17 @@ function Dashboard() {
   // =========================================
 
   const getProviderName = (appointment) => {
-    const name = appointment?.provider?.user?.name || "Provider";
+    const name =
+      appointment?.provider?.user?.name || "Provider";
 
     // Prevent "Dr. Dr. Sharma"
     const cleanName = name
       .trim()
       .replace(/^dr\.?\s*/i, "");
 
-    return cleanName ? `Dr. ${cleanName}` : "Dr. Provider";
+    return cleanName
+      ? `Dr. ${cleanName}`
+      : "Dr. Provider";
   };
 
   const getAppointmentDate = (appointment) => {
@@ -91,7 +92,9 @@ function Dashboard() {
       return null;
     }
 
-    const date = new Date(appointment.appointmentDate);
+    const date = new Date(
+      appointment.appointmentDate
+    );
 
     if (Number.isNaN(date.getTime())) {
       return null;
@@ -108,7 +111,9 @@ function Dashboard() {
     }
 
     const datePart = date.toISOString().split("T")[0];
-    const startTime = appointment?.startTime || "00:00";
+
+    const startTime =
+      appointment?.startTime || "00:00";
 
     const combinedDate = new Date(
       `${datePart}T${startTime}:00`
@@ -159,12 +164,16 @@ function Dashboard() {
   };
 
   const getStatusLabel = (status) => {
-    if (!status) return "Pending";
+    if (!status) {
+      return "Pending";
+    }
 
     return String(status)
       .toLowerCase()
-      .replace("_", " ")
-      .replace(/\b\w/g, (char) => char.toUpperCase());
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (char) =>
+        char.toUpperCase()
+      );
   };
 
   // =========================================
@@ -192,15 +201,17 @@ function Dashboard() {
           getAppointmentDateTime(b)
       );
 
-    const completedAppointments = appointments.filter(
-      (appointment) =>
-        appointment.status === "COMPLETED"
-    );
+    const completedAppointments =
+      appointments.filter(
+        (appointment) =>
+          appointment.status === "COMPLETED"
+      );
 
-    const pendingAppointments = appointments.filter(
-      (appointment) =>
-        appointment.status === "PENDING"
-    );
+    const pendingAppointments =
+      appointments.filter(
+        (appointment) =>
+          appointment.status === "PENDING"
+      );
 
     const nextAppointment =
       upcomingAppointments.length > 0
@@ -237,639 +248,591 @@ function Dashboard() {
   // =========================================
 
   return (
-    <div className="patient-dashboard">
+    <div className="patient-content">
 
-      {/* ================= SIDEBAR ================= */}
+      {/* ================= WELCOME ================= */}
 
-      <aside className="patient-sidebar">
-        <div className="sidebar-brand">
-          <div className="sidebar-brand-icon">
-            <HeartPulse
-              size={22}
-              strokeWidth={2.5}
-            />
-          </div>
+      <section className="dashboard-welcome">
+        <div className="welcome-content">
 
-          <div>
-            <strong>HealthCare</strong>
-            <span>Patient Portal</span>
-          </div>
-        </div>
+          <span className="welcome-label">
+            <HeartPulse size={15} />
+            Your health matters
+          </span>
 
-        <div className="sidebar-section">
-          <p className="sidebar-label">
-            MAIN MENU
+          <h1>
+            Good morning{" "}
+            <span>
+              {patientName.split(" ")[0]}
+            </span>{" "}
+            👋
+          </h1>
+
+          <p>
+            Stay on top of your healthcare.
+            Manage appointments, payments,
+            and your health journey from one
+            place.
           </p>
 
-          <nav className="sidebar-nav">
-            <NavLink
-              to="/patient/dashboard"
-              className={({ isActive }) =>
-                `sidebar-link ${
-                  isActive ? "active" : ""
-                }`
-              }
-            >
-              <LayoutDashboard size={19} />
-              <span>Dashboard</span>
-            </NavLink>
+          <Link
+            to="/patient/book-appointment"
+            className="welcome-button"
+          >
+            <CalendarPlus size={18} />
+            Book an Appointment
+            <ArrowUpRight size={17} />
+          </Link>
 
-            <NavLink
-              to="/patient/book-appointment"
-              className={({ isActive }) =>
-                `sidebar-link ${
-                  isActive ? "active" : ""
-                }`
-              }
-            >
-              <CalendarPlus size={19} />
-              <span>Book Appointment</span>
-            </NavLink>
-
-            <NavLink
-              to="/patient/appointments"
-              className={({ isActive }) =>
-                `sidebar-link ${
-                  isActive ? "active" : ""
-                }`
-              }
-            >
-              <CalendarDays size={19} />
-              <span>My Appointments</span>
-            </NavLink>
-
-            <NavLink
-              to="/patient/payments"
-              className={({ isActive }) =>
-                `sidebar-link ${
-                  isActive ? "active" : ""
-                }`
-              }
-            >
-              <CreditCard size={19} />
-              <span>Payments</span>
-            </NavLink>
-          </nav>
         </div>
 
-        <div className="sidebar-section sidebar-secondary">
-          <p className="sidebar-label">
-            ACCOUNT
-          </p>
+        <div className="welcome-visual">
 
-          <nav className="sidebar-nav">
-            <NavLink
-              to="/patient/profile"
-              className={({ isActive }) =>
-                `sidebar-link ${
-                  isActive ? "active" : ""
-                }`
-              }
-            >
-              <UserRound size={19} />
-              <span>My Profile</span>
-            </NavLink>
+          <div className="welcome-circle large"></div>
 
-            <NavLink
-              to="/patient/settings"
-              className={({ isActive }) =>
-                `sidebar-link ${
-                  isActive ? "active" : ""
-                }`
-              }
-            >
-              <Settings size={19} />
-              <span>Settings</span>
-            </NavLink>
-          </nav>
-        </div>
+          <div className="welcome-circle medium"></div>
 
-        <div className="sidebar-bottom">
-          <div className="sidebar-help-card">
-            <div className="help-icon">
-              <Activity size={18} />
+          <div className="welcome-health-card">
+
+            <div className="health-card-icon">
+              <HeartPulse size={27} />
             </div>
 
             <div>
-              <strong>Need Help?</strong>
-              <span>Contact our support team</span>
+              <span>Health Status</span>
+
+              <strong>
+                You're doing great
+              </strong>
             </div>
+
+            <CheckCircle2 size={22} />
+
           </div>
 
-          <button
-            type="button"
-            className="sidebar-logout"
-            onClick={handleLogout}
-          >
-            <LogOut size={19} />
-            <span>Logout</span>
-          </button>
         </div>
-      </aside>
+      </section>
 
-      {/* ================= MAIN ================= */}
+      {/* ================= ERROR ================= */}
 
-      <main className="patient-main">
+      {appointmentError && (
+        <div className="dashboard-api-error">
 
-        
+          <AlertCircle size={18} />
 
-        {/* ================= CONTENT ================= */}
+          <span>
+            {appointmentError}
+          </span>
 
-        <div className="patient-content">
+        </div>
+      )}
 
-          {/* ================= WELCOME ================= */}
+      {/* ================= STATS ================= */}
 
-          <section className="dashboard-welcome">
-            <div className="welcome-content">
-              <span className="welcome-label">
-                <HeartPulse size={15} />
-                Your health matters
+      <section className="dashboard-stats">
+
+        <div className="stat-card">
+
+          <div className="stat-icon blue">
+            <CalendarCheck2 size={21} />
+          </div>
+
+          <div className="stat-content">
+
+            <span>Upcoming</span>
+
+            <strong>
+              {loadingAppointments
+                ? "—"
+                : upcomingAppointments.length}
+            </strong>
+
+            <small>
+              Upcoming appointments
+            </small>
+
+          </div>
+
+        </div>
+
+        <div className="stat-card">
+
+          <div className="stat-icon green">
+            <CheckCircle2 size={21} />
+          </div>
+
+          <div className="stat-content">
+
+            <span>Completed</span>
+
+            <strong>
+              {loadingAppointments
+                ? "—"
+                : completedAppointments.length}
+            </strong>
+
+            <small>
+              Appointments completed
+            </small>
+
+          </div>
+
+        </div>
+
+        <div className="stat-card">
+
+          <div className="stat-icon amber">
+            <Hourglass size={21} />
+          </div>
+
+          <div className="stat-content">
+
+            <span>Pending</span>
+
+            <strong>
+              {loadingAppointments
+                ? "—"
+                : pendingAppointments.length}
+            </strong>
+
+            <small>
+              Awaiting confirmation
+            </small>
+
+          </div>
+
+        </div>
+
+        <div className="stat-card">
+
+          <div className="stat-icon purple">
+            <CalendarDays size={21} />
+          </div>
+
+          <div className="stat-content">
+
+            <span>Total Visits</span>
+
+            <strong>
+              {loadingAppointments
+                ? "—"
+                : appointments.length}
+            </strong>
+
+            <small>
+              Your healthcare visits
+            </small>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* ================= MAIN GRID ================= */}
+
+      <section className="dashboard-grid">
+
+        {/* ================= UPCOMING ================= */}
+
+        <div className="dashboard-card upcoming-card">
+
+          <div className="card-header">
+
+            <div>
+
+              <span className="card-eyebrow">
+                NEXT APPOINTMENT
               </span>
 
-              <h1>
-                Good morning,{" "}
+              <h3>
+                Upcoming Appointment
+              </h3>
+
+            </div>
+
+            <Link
+              to="/patient/appointments"
+              className="card-link"
+            >
+              View all
+              <ChevronRight size={16} />
+            </Link>
+
+          </div>
+
+          {loadingAppointments ? (
+
+            <div className="dashboard-loading">
+
+              <Loader2
+                size={23}
+                className="dashboard-loading-icon"
+              />
+
+              <span>
+                Loading appointment...
+              </span>
+
+            </div>
+
+          ) : nextAppointment ? (
+
+            <div className="upcoming-appointment">
+
+              <div className="upcoming-date-box">
+
+                <CalendarDays size={20} />
+
+                <strong>
+                  {
+                    formatShortDate(
+                      nextAppointment
+                    ).day
+                  }
+                </strong>
+
                 <span>
-                  {patientName.split(" ")[0]}
-                </span>{" "}
-                👋
-              </h1>
+                  {
+                    formatShortDate(
+                      nextAppointment
+                    ).month
+                  }
+                </span>
+
+              </div>
+
+              <div className="upcoming-details">
+
+                <span className="upcoming-label">
+                  {formatAppointmentDate(
+                    nextAppointment
+                  )}
+                </span>
+
+                <h4>
+                  {nextAppointment.service?.name ||
+                    "Appointment"}
+                </h4>
+
+                <p>
+                  <Stethoscope size={14} />
+
+                  {getProviderName(
+                    nextAppointment
+                  )}
+                </p>
+
+                <div className="upcoming-meta">
+
+                  <span>
+                    <Clock3 size={13} />
+
+                    {nextAppointment.startTime} -{" "}
+                    {nextAppointment.endTime}
+                  </span>
+
+                  {nextAppointment.branch?.name && (
+                    <span>
+                      <MapPin size={13} />
+
+                      {nextAppointment.branch.name}
+                    </span>
+                  )}
+
+                </div>
+
+                <span
+                  className={`status-badge ${getStatusClass(
+                    nextAppointment.status
+                  )}`}
+                >
+                  {getStatusLabel(
+                    nextAppointment.status
+                  )}
+                </span>
+
+              </div>
+
+            </div>
+
+          ) : (
+
+            <div className="empty-appointment">
+
+              <div className="empty-icon">
+                <CalendarDays size={28} />
+              </div>
+
+              <h4>
+                No upcoming appointments
+              </h4>
 
               <p>
-                Stay on top of your healthcare.
-                Manage appointments, payments,
-                and your health journey from one
-                place.
+                You don't have any upcoming
+                appointments. Book a consultation
+                with a healthcare provider.
               </p>
 
               <Link
                 to="/patient/book-appointment"
-                className="welcome-button"
+                className="outline-action"
               >
-                <CalendarPlus size={18} />
-                Book an Appointment
-                <ArrowUpRight size={17} />
+                <CalendarPlus size={17} />
+                Book Appointment
               </Link>
+
             </div>
 
-            <div className="welcome-visual">
-              <div className="welcome-circle large"></div>
-              <div className="welcome-circle medium"></div>
-
-              <div className="welcome-health-card">
-                <div className="health-card-icon">
-                  <HeartPulse size={27} />
-                </div>
-
-                <div>
-                  <span>Health Status</span>
-                  <strong>
-                    You're doing great
-                  </strong>
-                </div>
-
-                <CheckCircle2 size={22} />
-              </div>
-            </div>
-          </section>
-
-          {/* ================= ERROR ================= */}
-
-          {appointmentError && (
-            <div className="dashboard-api-error">
-              <AlertCircle size={18} />
-
-              <span>{appointmentError}</span>
-            </div>
           )}
 
-          {/* ================= STATS ================= */}
+        </div>
 
-          <section className="dashboard-stats">
+        {/* ================= QUICK ACTIONS ================= */}
 
-            <div className="stat-card">
-              <div className="stat-icon blue">
-                <CalendarCheck2 size={21} />
-              </div>
+        <div className="dashboard-card quick-card">
 
-              <div className="stat-content">
-                <span>Upcoming</span>
+          <div className="card-header">
+
+            <div>
+
+              <span className="card-eyebrow">
+                QUICK ACCESS
+              </span>
+
+              <h3>
+                Quick Actions
+              </h3>
+
+            </div>
+
+          </div>
+
+          <div className="quick-actions">
+
+            <Link
+              to="/patient/book-appointment"
+              className="quick-action blue"
+            >
+
+              <span>
+                <CalendarPlus size={20} />
+              </span>
+
+              <div>
 
                 <strong>
-                  {loadingAppointments
-                    ? "—"
-                    : upcomingAppointments.length}
+                  Book Appointment
                 </strong>
 
                 <small>
-                  Upcoming appointments
+                  Find a provider and schedule a
+                  visit
                 </small>
-              </div>
-            </div>
 
-            <div className="stat-card">
-              <div className="stat-icon green">
-                <CheckCircle2 size={21} />
               </div>
 
-              <div className="stat-content">
-                <span>Completed</span>
+              <ChevronRight size={17} />
+
+            </Link>
+
+            <Link
+              to="/patient/appointments"
+              className="quick-action green"
+            >
+
+              <span>
+                <CalendarDays size={20} />
+              </span>
+
+              <div>
 
                 <strong>
-                  {loadingAppointments
-                    ? "—"
-                    : completedAppointments.length}
+                  My Appointments
                 </strong>
 
                 <small>
-                  Appointments completed
+                  View your appointment history
                 </small>
-              </div>
-            </div>
 
-            <div className="stat-card">
-              <div className="stat-icon amber">
-                <Hourglass size={21} />
               </div>
 
-              <div className="stat-content">
-                <span>Pending</span>
+              <ChevronRight size={17} />
+
+            </Link>
+
+            <Link
+              to="/patient/payments"
+              className="quick-action purple"
+            >
+
+              <span>
+                <CreditCard size={20} />
+              </span>
+
+              <div>
 
                 <strong>
-                  {loadingAppointments
-                    ? "—"
-                    : pendingAppointments.length}
+                  Payments
                 </strong>
 
                 <small>
-                  Awaiting confirmation
+                  View your payment history
                 </small>
+
               </div>
+
+              <ChevronRight size={17} />
+
+            </Link>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* ================= RECENT APPOINTMENTS ================= */}
+
+      <section className="dashboard-card recent-card">
+
+        <div className="card-header">
+
+          <div>
+
+            <span className="card-eyebrow">
+              ACTIVITY
+            </span>
+
+            <h3>
+              Recent Appointments
+            </h3>
+
+          </div>
+
+          <Link
+            to="/patient/appointments"
+            className="card-link"
+          >
+            View all
+            <ChevronRight size={16} />
+          </Link>
+
+        </div>
+
+        {loadingAppointments ? (
+
+          <div className="dashboard-loading recent-loading">
+
+            <Loader2
+              size={22}
+              className="dashboard-loading-icon"
+            />
+
+            <span>
+              Loading appointment history...
+            </span>
+
+          </div>
+
+        ) : recentAppointments.length === 0 ? (
+
+          <div className="recent-empty">
+
+            <div className="recent-empty-icon">
+              <Stethoscope size={24} />
             </div>
 
-            <div className="stat-card">
-              <div className="stat-icon purple">
-                <CalendarDays size={21} />
-              </div>
+            <div>
 
-              <div className="stat-content">
-                <span>Total Visits</span>
+              <h4>
+                No appointment history yet
+              </h4>
 
-                <strong>
-                  {loadingAppointments
-                    ? "—"
-                    : appointments.length}
-                </strong>
+              <p>
+                Your completed and previous
+                appointments will appear here.
+              </p>
 
-                <small>
-                  Your healthcare visits
-                </small>
-              </div>
             </div>
 
-          </section>
+          </div>
 
-          {/* ================= MAIN GRID ================= */}
+        ) : (
 
-          <section className="dashboard-grid">
+          <div className="dashboard-recent-list">
 
-            {/* ================= UPCOMING ================= */}
+            {recentAppointments.map(
+              (appointment) => {
 
-            <div className="dashboard-card upcoming-card">
+                const shortDate =
+                  formatShortDate(
+                    appointment
+                  );
 
-              <div className="card-header">
-                <div>
-                  <span className="card-eyebrow">
-                    NEXT APPOINTMENT
-                  </span>
+                return (
+                  <div
+                    className="dashboard-recent-item"
+                    key={appointment.id}
+                  >
 
-                  <h3>
-                    Upcoming Appointment
-                  </h3>
-                </div>
+                    <div className="recent-date">
 
-                <Link
-                  to="/patient/appointments"
-                  className="card-link"
-                >
-                  View all
-                  <ChevronRight size={16} />
-                </Link>
-              </div>
+                      <strong>
+                        {shortDate.day}
+                      </strong>
 
-              {loadingAppointments ? (
-                <div className="dashboard-loading">
-                  <Loader2
-                    size={23}
-                    className="dashboard-loading-icon"
-                  />
-
-                  <span>
-                    Loading appointment...
-                  </span>
-                </div>
-              ) : nextAppointment ? (
-                <div className="upcoming-appointment">
-
-                  <div className="upcoming-date-box">
-                    <CalendarDays size={20} />
-
-                    <strong>
-                      {formatShortDate(
-                        nextAppointment
-                      ).day}
-                    </strong>
-
-                    <span>
-                      {formatShortDate(
-                        nextAppointment
-                      ).month}
-                    </span>
-                  </div>
-
-                  <div className="upcoming-details">
-
-                    <span className="upcoming-label">
-                      {formatAppointmentDate(
-                        nextAppointment
-                      )}
-                    </span>
-
-                    <h4>
-                      {nextAppointment.service?.name ||
-                        "Appointment"}
-                    </h4>
-
-                    <p>
-                      <Stethoscope size={14} />
-                      {getProviderName(
-                        nextAppointment
-                      )}
-                    </p>
-
-                    <div className="upcoming-meta">
                       <span>
-                        <Clock3 size={13} />
-                        {nextAppointment.startTime} -{" "}
-                        {nextAppointment.endTime}
+                        {shortDate.month}
                       </span>
 
-                      {nextAppointment.branch?.name && (
-                        <span>
-                          <MapPin size={13} />
-                          {nextAppointment.branch.name}
-                        </span>
-                      )}
+                    </div>
+
+                    <div className="recent-info">
+
+                      <strong>
+                        {appointment.service?.name ||
+                          "Appointment"}
+                      </strong>
+
+                      <span>
+                        {getProviderName(
+                          appointment
+                        )}
+                      </span>
+
+                      <small>
+                        <Clock3 size={12} />
+
+                        {appointment.startTime} -{" "}
+                        {appointment.endTime}
+                      </small>
+
                     </div>
 
                     <span
                       className={`status-badge ${getStatusClass(
-                        nextAppointment.status
+                        appointment.status
                       )}`}
                     >
                       {getStatusLabel(
-                        nextAppointment.status
+                        appointment.status
                       )}
                     </span>
 
                   </div>
-                </div>
-              ) : (
-                <div className="empty-appointment">
-
-                  <div className="empty-icon">
-                    <CalendarDays size={28} />
-                  </div>
-
-                  <h4>
-                    No upcoming appointments
-                  </h4>
-
-                  <p>
-                    You don't have any upcoming
-                    appointments. Book a consultation
-                    with a healthcare provider.
-                  </p>
-
-                  <Link
-                    to="/patient/book-appointment"
-                    className="outline-action"
-                  >
-                    <CalendarPlus size={17} />
-                    Book Appointment
-                  </Link>
-
-                </div>
-              )}
-
-            </div>
-
-            {/* ================= QUICK ACTIONS ================= */}
-
-            <div className="dashboard-card quick-card">
-
-              <div className="card-header">
-                <div>
-                  <span className="card-eyebrow">
-                    QUICK ACCESS
-                  </span>
-
-                  <h3>Quick Actions</h3>
-                </div>
-              </div>
-
-              <div className="quick-actions">
-
-                <Link
-                  to="/patient/book-appointment"
-                  className="quick-action blue"
-                >
-                  <span>
-                    <CalendarPlus size={20} />
-                  </span>
-
-                  <div>
-                    <strong>
-                      Book Appointment
-                    </strong>
-
-                    <small>
-                      Find a provider and schedule a
-                      visit
-                    </small>
-                  </div>
-
-                  <ChevronRight size={17} />
-                </Link>
-
-                <Link
-                  to="/patient/appointments"
-                  className="quick-action green"
-                >
-                  <span>
-                    <CalendarDays size={20} />
-                  </span>
-
-                  <div>
-                    <strong>
-                      My Appointments
-                    </strong>
-
-                    <small>
-                      View your appointment history
-                    </small>
-                  </div>
-
-                  <ChevronRight size={17} />
-                </Link>
-
-                <Link
-                  to="/patient/payments"
-                  className="quick-action purple"
-                >
-                  <span>
-                    <CreditCard size={20} />
-                  </span>
-
-                  <div>
-                    <strong>Payments</strong>
-
-                    <small>
-                      View your payment history
-                    </small>
-                  </div>
-
-                  <ChevronRight size={17} />
-                </Link>
-
-              </div>
-            </div>
-
-          </section>
-
-          {/* ================= RECENT APPOINTMENTS ================= */}
-
-          <section className="dashboard-card recent-card">
-
-            <div className="card-header">
-              <div>
-                <span className="card-eyebrow">
-                  ACTIVITY
-                </span>
-
-                <h3>
-                  Recent Appointments
-                </h3>
-              </div>
-
-              <Link
-                to="/patient/appointments"
-                className="card-link"
-              >
-                View all
-                <ChevronRight size={16} />
-              </Link>
-            </div>
-
-            {loadingAppointments ? (
-              <div className="dashboard-loading recent-loading">
-                <Loader2
-                  size={22}
-                  className="dashboard-loading-icon"
-                />
-
-                <span>
-                  Loading appointment history...
-                </span>
-              </div>
-            ) : recentAppointments.length === 0 ? (
-              <div className="recent-empty">
-
-                <div className="recent-empty-icon">
-                  <Stethoscope size={24} />
-                </div>
-
-                <div>
-                  <h4>
-                    No appointment history yet
-                  </h4>
-
-                  <p>
-                    Your completed and previous
-                    appointments will appear here.
-                  </p>
-                </div>
-
-              </div>
-            ) : (
-              <div className="dashboard-recent-list">
-
-                {recentAppointments.map(
-                  (appointment) => {
-                    const shortDate =
-                      formatShortDate(
-                        appointment
-                      );
-
-                    return (
-                      <div
-                        className="dashboard-recent-item"
-                        key={appointment.id}
-                      >
-
-                        <div className="recent-date">
-                          <strong>
-                            {shortDate.day}
-                          </strong>
-
-                          <span>
-                            {shortDate.month}
-                          </span>
-                        </div>
-
-                        <div className="recent-info">
-                          <strong>
-                            {appointment.service?.name ||
-                              "Appointment"}
-                          </strong>
-
-                          <span>
-                            {getProviderName(
-                              appointment
-                            )}
-                          </span>
-
-                          <small>
-                            <Clock3 size={12} />
-                            {appointment.startTime} -{" "}
-                            {appointment.endTime}
-                          </small>
-                        </div>
-
-                        <span
-                          className={`status-badge ${getStatusClass(
-                            appointment.status
-                          )}`}
-                        >
-                          {getStatusLabel(
-                            appointment.status
-                          )}
-                        </span>
-
-                      </div>
-                    );
-                  }
-                )}
-
-              </div>
+                );
+              }
             )}
 
-          </section>
+          </div>
 
-        </div>
-      </main>
+        )}
+
+      </section>
+
     </div>
   );
 }
 
 export default Dashboard;
-

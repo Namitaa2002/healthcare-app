@@ -1,13 +1,15 @@
-
+import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-function PublicLayout({ children }) {
+function PublicLayout() {
   return (
     <div className="public-layout">
       <Navbar />
 
-      <main>{children}</main>
+      <main>
+        <Outlet />
+      </main>
 
       <Footer />
     </div>
@@ -15,4 +17,3 @@ function PublicLayout({ children }) {
 }
 
 export default PublicLayout;
-

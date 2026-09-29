@@ -1,12 +1,7 @@
-import PublicLayout from "./layouts/PublicLayout";
 import AppRoutes from "./routes/AppRoutes";
 
 function App() {
-  return (
-    <PublicLayout>
-      <AppRoutes />
-    </PublicLayout>
-  );
+  return <AppRoutes />;
 }
 
 export default App;

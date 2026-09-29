@@ -1,4 +1,5 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
+
 import { useAuth } from "../context/AuthContext";
 
 function ProtectedRoute({ children, allowedRoles }) {
@@ -14,7 +15,13 @@ function ProtectedRoute({ children, allowedRoles }) {
     return <Navigate to="/" replace />;
   }
 
-  return children;
+  // For normal protected routes using children
+  if (children) {
+    return children;
+  }
+
+  // For nested routes using Outlet
+  return <Outlet />;
 }
 
 export default ProtectedRoute;

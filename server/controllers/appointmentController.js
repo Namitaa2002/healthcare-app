@@ -1,5 +1,5 @@
 import prisma from "../config/prisma.js";
-
+import { createNotification } from "../utils/notificationService.js";
 // Create appointment
 
 const createAppointment = async (req, res) => {
@@ -291,6 +291,24 @@ const createAppointment = async (req, res) => {
         isolationLevel: "Serializable",
       }
     );
+
+    const patientUser = await prisma.user.findUnique({
+  where: {
+    id: patient.userId,
+  },
+  select: {
+    appointmentReminders: true,
+  },
+});
+
+if (patientUser?.appointmentReminders) {
+  await createNotification({
+    userId: patient.userId,
+    title: "Appointment Booked",
+    message: `Your appointment for ${service.name} has been booked successfully.`,
+    type: "APPOINTMENT",
+  });
+}
 
     return res.status(201).json({
       success: true,
@@ -750,6 +768,25 @@ const cancelAppointment = async (req, res) => {
         status: "CANCELLED",
       },
     });
+
+    const patientUser = await prisma.user.findUnique({
+  where: {
+    id: appointment.patient.userId,
+  },
+  select: {
+    appointmentReminders: true,
+  },
+});
+
+if (patientUser?.appointmentReminders) {
+  await createNotification({
+    userId: appointment.patient.userId,
+    title: "Appointment Cancelled",
+    message:
+      "Your appointment has been cancelled.",
+    type: "APPOINTMENT",
+  });
+}
 
     return res.status(200).json({
       success: true,

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 
 import {
@@ -7,7 +8,6 @@ import {
   Bell,
   CreditCard,
   Mail,
-  ShieldCheck,
   X,
   AlertTriangle,
   CheckCircle2,
@@ -65,9 +65,15 @@ function Settings() {
   });
 
   const [passwordError, setPasswordError] = useState("");
-  const [passwordMessage, setPasswordMessage] = useState("");
+  const [passwordMessage, setPasswordMessage] =
+    useState("");
+
   const [changingPassword, setChangingPassword] =
     useState(false);
+
+  // =========================================
+  // FETCH SETTINGS
+  // =========================================
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -79,9 +85,27 @@ function Settings() {
 
         if (response.data) {
           setSettings(response.data);
+
+          // Sync notification bell when
+          // settings page is opened.
+          window.dispatchEvent(
+            new CustomEvent(
+              "patient-notification-setting-changed",
+              {
+                detail: {
+                  enabled:
+                    response.data
+                      .appointmentReminders,
+                },
+              }
+            )
+          );
         }
       } catch (error) {
-        console.error("Fetch settings error:", error);
+        console.error(
+          "Fetch settings error:",
+          error
+        );
 
         setError(
           error.response?.data?.message ||
@@ -95,6 +119,10 @@ function Settings() {
     fetchSettings();
   }, []);
 
+  // =========================================
+  // TEMPORARY MESSAGE
+  // =========================================
+
   const showTemporaryMessage = (text) => {
     setMessage(text);
 
@@ -102,6 +130,10 @@ function Settings() {
       setMessage("");
     }, 2500);
   };
+
+  // =========================================
+  // UPDATE SETTING
+  // =========================================
 
   const handleSettingChange = async (settingName) => {
     const newValue = !settings[settingName];
@@ -127,14 +159,51 @@ function Settings() {
         }));
       }
 
-      showTemporaryMessage("Settings updated successfully.");
+      // =========================================
+      // SYNC PATIENT NOTIFICATION BELL
+      // =========================================
+
+      if (settingName === "appointmentReminders") {
+        window.dispatchEvent(
+          new CustomEvent(
+            "patient-notification-setting-changed",
+            {
+              detail: {
+                enabled: newValue,
+              },
+            }
+          )
+        );
+      }
+
+      showTemporaryMessage(
+        "Settings updated successfully."
+      );
     } catch (error) {
-      console.error("Update settings error:", error);
+      console.error(
+        "Update settings error:",
+        error
+      );
 
       setSettings((previousSettings) => ({
         ...previousSettings,
         [settingName]: !newValue,
       }));
+
+      // If saving notification setting failed,
+      // restore the previous bell state.
+      if (settingName === "appointmentReminders") {
+        window.dispatchEvent(
+          new CustomEvent(
+            "patient-notification-setting-changed",
+            {
+              detail: {
+                enabled: !newValue,
+              },
+            }
+          )
+        );
+      }
 
       setError(
         error.response?.data?.message ||
@@ -144,6 +213,10 @@ function Settings() {
       setSaving("");
     }
   };
+
+  // =========================================
+  // PASSWORD MODAL
+  // =========================================
 
   const openPasswordModal = () => {
     setPasswordData({
@@ -178,88 +251,116 @@ function Settings() {
   };
 
   const handleChangePassword = async (event) => {
-  event.preventDefault();
+    event.preventDefault();
 
-  const {
-    currentPassword,
-    newPassword,
-    confirmPassword,
-  } = passwordData;
-
-  if (!currentPassword || !newPassword || !confirmPassword) {
-    setPasswordError("Please fill in all password fields.");
-    return;
-  }
-
-  if (newPassword.length < 6) {
-    setPasswordError(
-      "New password must be at least 6 characters long."
-    );
-    return;
-  }
-
-  if (newPassword !== confirmPassword) {
-    setPasswordError(
-      "New password and confirm password do not match."
-    );
-    return;
-  }
-
-  try {
-    setChangingPassword(true);
-    setPasswordError("");
-    setPasswordMessage("");
-
-    const response = await changePassword({
+    const {
       currentPassword,
       newPassword,
-    });
+      confirmPassword,
+    } = passwordData;
 
-    setPasswordMessage(
-      response.message || "Password changed successfully."
-    );
+    if (
+      !currentPassword ||
+      !newPassword ||
+      !confirmPassword
+    ) {
+      setPasswordError(
+        "Please fill in all password fields."
+      );
 
-    setPasswordData({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
-  } catch (error) {
-    console.error("Change password error:", error);
+      return;
+    }
 
-    setPasswordError(
-      error.response?.data?.message ||
-        "Unable to change password."
-    );
-  } finally {
-    setChangingPassword(false);
-  }
-};
+    if (newPassword.length < 6) {
+      setPasswordError(
+        "New password must be at least 6 characters long."
+      );
+
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setPasswordError(
+        "New password and confirm password do not match."
+      );
+
+      return;
+    }
+
+    try {
+      setChangingPassword(true);
+      setPasswordError("");
+      setPasswordMessage("");
+
+      const response = await changePassword({
+        currentPassword,
+        newPassword,
+      });
+
+      setPasswordMessage(
+        response.message ||
+          "Password changed successfully."
+      );
+
+      setPasswordData({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    } catch (error) {
+      console.error(
+        "Change password error:",
+        error
+      );
+
+      setPasswordError(
+        error.response?.data?.message ||
+          "Unable to change password."
+      );
+    } finally {
+      setChangingPassword(false);
+    }
+  };
+
+  // =========================================
+  // LOGOUT
+  // =========================================
 
   const handleLogout = () => {
     logout();
   };
 
+  // =========================================
+  // DELETE ACCOUNT
+  // =========================================
+
   const handleDeleteAccount = async () => {
-  try {
-    setError("");
+    try {
+      setError("");
 
-    await deleteAccount();
+      await deleteAccount();
 
-    setShowDeleteModal(false);
+      setShowDeleteModal(false);
 
-    logout();
-  } catch (error) {
-    console.error("Delete account error:", error);
+      logout();
+    } catch (error) {
+      console.error(
+        "Delete account error:",
+        error
+      );
 
-    setShowDeleteModal(false);
+      setShowDeleteModal(false);
 
-    setError(
-      error.response?.data?.message ||
-        "Unable to delete your account."
-    );
-  }
-};
+      setError(
+        error.response?.data?.message ||
+          "Unable to delete your account."
+      );
+    }
+  };
+
+  // =========================================
+  // LOADING
+  // =========================================
 
   if (loading) {
     return (
@@ -273,8 +374,8 @@ function Settings() {
             <h1>Settings</h1>
 
             <p>
-              Manage your account preferences, security and
-              notifications.
+              Manage your account preferences, security
+              and notifications.
             </p>
           </div>
         </div>
@@ -285,6 +386,10 @@ function Settings() {
       </div>
     );
   }
+
+  // =========================================
+  // PAGE
+  // =========================================
 
   return (
     <div className="patient-page">
@@ -297,8 +402,8 @@ function Settings() {
           <h1>Settings</h1>
 
           <p>
-            Manage your account preferences, security and
-            notifications.
+            Manage your account preferences, security
+            and notifications.
           </p>
         </div>
       </div>
@@ -318,7 +423,6 @@ function Settings() {
       )}
 
       <div className="settings-grid">
-
         {/* ================= SECURITY ================= */}
 
         <div className="settings-card">
@@ -334,8 +438,8 @@ function Settings() {
                 <strong>Change Password</strong>
 
                 <p>
-                  Update your account password to keep your
-                  account secure.
+                  Update your account password to keep
+                  your account secure.
                 </p>
               </div>
             </div>
@@ -355,6 +459,8 @@ function Settings() {
         <div className="settings-card">
           <h3>Notifications</h3>
 
+          {/* APPOINTMENT REMINDERS */}
+
           <div className="settings-item">
             <div className="settings-item-content">
               <div className="settings-item-icon">
@@ -362,7 +468,9 @@ function Settings() {
               </div>
 
               <div>
-                <strong>Appointment Reminders</strong>
+                <strong>
+                  Appointment Reminders
+                </strong>
 
                 <p>
                   Receive reminders about upcoming
@@ -374,7 +482,9 @@ function Settings() {
             <label className="settings-switch">
               <input
                 type="checkbox"
-                checked={settings.appointmentReminders}
+                checked={
+                  settings.appointmentReminders
+                }
                 disabled={
                   saving === "appointmentReminders"
                 }
@@ -388,6 +498,8 @@ function Settings() {
               <span className="settings-switch-slider"></span>
             </label>
           </div>
+
+          {/* PAYMENT UPDATES */}
 
           <div className="settings-item">
             <div className="settings-item-content">
@@ -409,15 +521,21 @@ function Settings() {
               <input
                 type="checkbox"
                 checked={settings.paymentUpdates}
-                disabled={saving === "paymentUpdates"}
+                disabled={
+                  saving === "paymentUpdates"
+                }
                 onChange={() =>
-                  handleSettingChange("paymentUpdates")
+                  handleSettingChange(
+                    "paymentUpdates"
+                  )
                 }
               />
 
               <span className="settings-switch-slider"></span>
             </label>
           </div>
+
+          {/* EMAIL UPDATES */}
 
           <div className="settings-item">
             <div className="settings-item-content">
@@ -429,8 +547,8 @@ function Settings() {
                 <strong>Email Updates</strong>
 
                 <p>
-                  Receive important healthcare updates by
-                  email.
+                  Receive important healthcare updates
+                  by email.
                 </p>
               </div>
             </div>
@@ -439,9 +557,13 @@ function Settings() {
               <input
                 type="checkbox"
                 checked={settings.emailUpdates}
-                disabled={saving === "emailUpdates"}
+                disabled={
+                  saving === "emailUpdates"
+                }
                 onChange={() =>
-                  handleSettingChange("emailUpdates")
+                  handleSettingChange(
+                    "emailUpdates"
+                  )
                 }
               />
 
@@ -456,7 +578,6 @@ function Settings() {
           <h3>Account Actions</h3>
 
           <div className="settings-actions">
-
             <button
               type="button"
               className="settings-btn logout-btn"
@@ -478,7 +599,6 @@ function Settings() {
               <Trash2 size={15} />
               Delete Account
             </button>
-
           </div>
         </div>
       </div>
@@ -505,8 +625,8 @@ function Settings() {
                 <h3>Change Password</h3>
 
                 <p>
-                  Enter your current password and choose a
-                  new password.
+                  Enter your current password and choose
+                  a new password.
                 </p>
               </div>
 
@@ -750,8 +870,8 @@ function Settings() {
             <h3>Delete Account?</h3>
 
             <p>
-              Are you sure you want to delete your account?
-              This action cannot be undone.
+              Are you sure you want to delete your
+              account? This action cannot be undone.
             </p>
 
             <div className="settings-modal-actions">
@@ -781,3 +901,4 @@ function Settings() {
 }
 
 export default Settings;
+

@@ -1,22 +1,19 @@
+
 import { useEffect, useMemo, useState } from "react";
 
 import {
   CalendarDays,
   Clock3,
-  LayoutDashboard,
-  LogOut,
-  Settings,
   UserRound,
   Users,
   Loader2,
   AlertCircle,
-  X,
-  AlertTriangle,
 } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
 
 import api from "../../services/api";
+
 import { useAuth } from "../../context/AuthContext";
 
 import "../../styles/ProviderDashboard.css";
@@ -24,13 +21,13 @@ import "../../styles/ProviderDashboard.css";
 function ProviderDashboard() {
   const navigate = useNavigate();
 
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   const [appointments, setAppointments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
-  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const [error, setError] = useState("");
 
   /* =========================================
      FETCH DASHBOARD DATA
@@ -214,649 +211,364 @@ function ProviderDashboard() {
       : `Dr. ${user.name}`;
   };
 
-  /* =========================================
-     SIDEBAR NAVIGATION
-  ========================================= */
-
-  const handleDashboard = () => {
-    navigate("/provider/dashboard");
-  };
-
-  const handleAppointments = () => {
-    navigate("/provider/appointments");
-  };
-
-  const handleAvailability = () => {
-    navigate("/provider/availability");
-  };
-
-  const handlePatients = () => {
-    navigate("/provider/patients");
-  };
-
-  const handleProfile = () => {
-    navigate("/provider/profile");
-  };
-
-  const handleSettings = () => {
-    navigate("/provider/settings");
-  };
-
-  /* =========================================
-     LOGOUT
-  ========================================= */
-
-  const handleLogout = () => {
-    setShowLogoutPopup(true);
-  };
-
-  const handleLogoutCancel = () => {
-    setShowLogoutPopup(false);
-  };
-
-  const handleLogoutConfirm = () => {
-    setShowLogoutPopup(false);
-
-    logout();
-
-    navigate("/provider/login");
-  };
-
   return (
-    <div className="provider-dashboard">
+    <div className="provider-dashboard-content">
 
       {/* =====================================
-          SIDEBAR
+          HEADER
       ===================================== */}
 
-      <aside className="provider-sidebar">
+      <header className="provider-header">
+        <div>
+          <span className="provider-page-label">
+            PROVIDER PORTAL
+          </span>
 
-        <div className="provider-sidebar-brand">
-          <div className="provider-brand-icon">
-            <UserRound size={21} />
+          <h1>Dashboard</h1>
+
+          <p>
+            Manage your appointments and patient
+            care.
+          </p>
+        </div>
+
+        <div className="provider-profile">
+          <div className="provider-profile-avatar">
+            <UserRound size={20} />
           </div>
 
           <div>
-            <strong>Healthcare</strong>
-            <span>Provider Panel</span>
+            <strong>
+              {getProviderName()}
+            </strong>
+
+            <span>
+              Healthcare Provider
+            </span>
           </div>
         </div>
-
-        <nav className="provider-sidebar-nav">
-
-          <p className="provider-sidebar-title">
-            MENU
-          </p>
-
-          <button
-            type="button"
-            className="provider-sidebar-link active"
-            onClick={handleDashboard}
-          >
-            <LayoutDashboard size={18} />
-
-            <span>Dashboard</span>
-          </button>
-
-          <button
-            type="button"
-            className="provider-sidebar-link"
-            onClick={handleAppointments}
-          >
-            <CalendarDays size={18} />
-
-            <span>Appointments</span>
-          </button>
-
-          <button
-            type="button"
-            className="provider-sidebar-link"
-            onClick={handleAvailability}
-          >
-            <Clock3 size={18} />
-
-            <span>Availability</span>
-          </button>
-
-          <button
-            type="button"
-            className="provider-sidebar-link"
-            onClick={handlePatients}
-          >
-            <Users size={18} />
-
-            <span>Patients</span>
-          </button>
-
-          <p className="provider-sidebar-title provider-sidebar-title-space">
-            ACCOUNT
-          </p>
-
-          <button
-            type="button"
-            className="provider-sidebar-link"
-            onClick={handleProfile}
-          >
-            <UserRound size={18} />
-
-            <span>Profile</span>
-          </button>
-
-          <button
-            type="button"
-            className="provider-sidebar-link"
-            onClick={handleSettings}
-          >
-            <Settings size={18} />
-
-            <span>Settings</span>
-          </button>
-
-        </nav>
-
-        <div className="provider-sidebar-bottom">
-
-          <button
-            type="button"
-            className="provider-sidebar-link"
-            onClick={handleLogout}
-          >
-            <LogOut size={18} />
-
-            <span>Logout</span>
-          </button>
-
-        </div>
-
-      </aside>
+      </header>
 
       {/* =====================================
-          MAIN
+          ERROR
       ===================================== */}
 
-      <main className="provider-main">
+      {error && (
+        <div className="provider-error">
+          <AlertCircle size={18} />
 
-        {/* HEADER */}
+          <span>{error}</span>
 
-        <header className="provider-header">
+          <button
+            type="button"
+            onClick={fetchDashboardData}
+          >
+            Retry
+          </button>
+        </div>
+      )}
 
-          <div>
+      {/* =====================================
+          WELCOME
+      ===================================== */}
 
-            <span className="provider-page-label">
-              PROVIDER PORTAL
-            </span>
+      <section className="provider-welcome">
+        <div>
+          <span>Welcome back</span>
 
-            <h1>
-              Dashboard
-            </h1>
+          <h2>
+            Good to see you, Doctor.
+          </h2>
 
-            <p>
-              Manage your appointments and patient
-              care.
-            </p>
+          <p>
+            Here's an overview of your
+            appointments and patients.
+          </p>
+        </div>
 
-          </div>
+        <div className="provider-welcome-icon">
+          <CalendarDays size={30} />
+        </div>
+      </section>
 
-          <div className="provider-profile">
+      {/* =====================================
+          LOADING
+      ===================================== */}
 
-            <div className="provider-profile-avatar">
-              <UserRound size={20} />
+      {loading ? (
+        <div className="provider-dashboard-loading">
+          <Loader2
+            size={25}
+            className="provider-loading-icon"
+          />
+
+          <span>
+            Loading your dashboard...
+          </span>
+        </div>
+      ) : (
+        <>
+          {/* =================================
+              STATS
+          ================================= */}
+
+          <section className="provider-stats">
+
+            <div className="provider-stat-card">
+              <div className="provider-stat-icon">
+                <CalendarDays size={21} />
+              </div>
+
+              <div>
+                <span>
+                  Today's Appointments
+                </span>
+
+                <strong>
+                  {todaysAppointments.length}
+                </strong>
+              </div>
             </div>
 
-            <div>
+            <div className="provider-stat-card">
+              <div className="provider-stat-icon">
+                <Clock3 size={21} />
+              </div>
 
-              <strong>
-                {getProviderName()}
-              </strong>
+              <div>
+                <span>
+                  Upcoming Appointments
+                </span>
 
-              <span>
-                Healthcare Provider
-              </span>
-
+                <strong>
+                  {upcomingAppointments.length}
+                </strong>
+              </div>
             </div>
 
-          </div>
+            <div className="provider-stat-card">
+              <div className="provider-stat-icon">
+                <Users size={21} />
+              </div>
 
-        </header>
+              <div>
+                <span>
+                  Total Patients
+                </span>
 
-        {/* ERROR */}
+                <strong>
+                  {totalPatients}
+                </strong>
+              </div>
+            </div>
 
-        {error && (
-          <div className="provider-error">
+            <div className="provider-stat-card">
+              <div className="provider-stat-icon">
+                <UserRound size={21} />
+              </div>
 
-            <AlertCircle size={18} />
+              <div>
+                <span>
+                  Completed
+                </span>
 
-            <span>
-              {error}
-            </span>
+                <strong>
+                  {completedAppointments.length}
+                </strong>
+              </div>
+            </div>
 
-            <button
-              type="button"
-              onClick={fetchDashboardData}
-            >
-              Retry
-            </button>
+          </section>
 
-          </div>
-        )}
+          {/* =================================
+              CONTENT
+          ================================= */}
 
-        {/* WELCOME */}
+          <section className="provider-content-grid">
 
-        <section className="provider-welcome">
+            {/* TODAY'S APPOINTMENTS */}
 
-          <div>
+            <div className="provider-content-card">
 
-            <span>
-              Welcome back
-            </span>
-
-            <h2>
-              Good to see you, Doctor.
-            </h2>
-
-            <p>
-              Here's an overview of your
-              appointments and patients.
-            </p>
-
-          </div>
-
-          <div className="provider-welcome-icon">
-            <CalendarDays size={30} />
-          </div>
-
-        </section>
-
-        {/* LOADING */}
-
-        {loading ? (
-
-          <div className="provider-dashboard-loading">
-
-            <Loader2
-              size={25}
-              className="provider-loading-icon"
-            />
-
-            <span>
-              Loading your dashboard...
-            </span>
-
-          </div>
-
-        ) : (
-
-          <>
-
-            {/* =================================
-                STATS
-            ================================= */}
-
-            <section className="provider-stats">
-
-              <div className="provider-stat-card">
-
-                <div className="provider-stat-icon">
-                  <CalendarDays size={21} />
-                </div>
-
+              <div className="provider-card-header">
                 <div>
-
                   <span>
+                    Schedule
+                  </span>
+
+                  <h2>
                     Today's Appointments
-                  </span>
-
-                  <strong>
-                    {todaysAppointments.length}
-                  </strong>
-
+                  </h2>
                 </div>
 
+                <button
+                  type="button"
+                  className="provider-card-action"
+                  onClick={() =>
+                    navigate(
+                      "/provider/appointments"
+                    )
+                  }
+                >
+                  View all
+                </button>
               </div>
 
-              <div className="provider-stat-card">
+              {todaysAppointments.length === 0 ? (
+                <div className="provider-empty-state">
 
-                <div className="provider-stat-icon">
-                  <Clock3 size={21} />
-                </div>
-
-                <div>
-
-                  <span>
-                    Upcoming Appointments
-                  </span>
+                  <CalendarDays size={30} />
 
                   <strong>
-                    {upcomingAppointments.length}
+                    No appointments today
                   </strong>
 
-                </div>
-
-              </div>
-
-              <div className="provider-stat-card">
-
-                <div className="provider-stat-icon">
-                  <Users size={21} />
-                </div>
-
-                <div>
-
-                  <span>
-                    Total Patients
-                  </span>
-
-                  <strong>
-                    {totalPatients}
-                  </strong>
+                  <p>
+                    Your scheduled appointments
+                    will appear here.
+                  </p>
 
                 </div>
+              ) : (
+                <div className="provider-appointment-list">
 
-              </div>
+                  {todaysAppointments
+                    .slice(0, 5)
+                    .map((appointment) => (
+                      <div
+                        className="provider-appointment-item"
+                        key={appointment.id}
+                      >
 
-              <div className="provider-stat-card">
+                        <div className="provider-appointment-time">
+                          <Clock3 size={16} />
 
-                <div className="provider-stat-icon">
-                  <UserRound size={21} />
-                </div>
+                          <span>
+                            {appointment.startTime}{" "}
+                            -{" "}
+                            {appointment.endTime}
+                          </span>
+                        </div>
 
-                <div>
+                        <div className="provider-appointment-patient">
 
-                  <span>
-                    Completed
-                  </span>
+                          <strong>
+                            {appointment
+                              .patient?.user
+                              ?.name ||
+                              appointment
+                                .patient?.name ||
+                              "Patient"}
+                          </strong>
 
-                  <strong>
-                    {completedAppointments.length}
-                  </strong>
-
-                </div>
-
-              </div>
-
-            </section>
-
-            {/* =================================
-                CONTENT
-            ================================= */}
-
-            <section className="provider-content-grid">
-
-              {/* TODAY'S APPOINTMENTS */}
-
-              <div className="provider-content-card">
-
-                <div className="provider-card-header">
-
-                  <div>
-
-                    <span>
-                      Schedule
-                    </span>
-
-                    <h2>
-                      Today's Appointments
-                    </h2>
-
-                  </div>
-
-                  <button
-                    type="button"
-                    className="provider-card-action"
-                    onClick={handleAppointments}
-                  >
-                    View all
-                  </button>
-
-                </div>
-
-                {todaysAppointments.length === 0 ? (
-
-                  <div className="provider-empty-state">
-
-                    <CalendarDays size={30} />
-
-                    <strong>
-                      No appointments today
-                    </strong>
-
-                    <p>
-                      Your scheduled appointments
-                      will appear here.
-                    </p>
-
-                  </div>
-
-                ) : (
-
-                  <div className="provider-appointment-list">
-
-                    {todaysAppointments
-                      .slice(0, 5)
-                      .map((appointment) => (
-
-                        <div
-                          className="provider-appointment-item"
-                          key={appointment.id}
-                        >
-
-                          <div className="provider-appointment-time">
-
-                            <Clock3 size={16} />
-
-                            <span>
-                              {appointment.startTime}{" "}
-                              -{" "}
-                              {appointment.endTime}
-                            </span>
-
-                          </div>
-
-                          <div className="provider-appointment-patient">
-
-                            <strong>
-                              {appointment
-                                .patient?.user
-                                ?.name ||
-                                appointment
-                                  .patient?.name ||
-                                "Patient"}
-                            </strong>
-
-                            <span>
-                              {appointment
-                                .service
-                                ?.name ||
-                                "Appointment"}
-                            </span>
-
-                          </div>
-
-                          <span
-                            className={`provider-appointment-status ${appointment.status?.toLowerCase()}`}
-                          >
-                            {appointment.status ||
-                              "PENDING"}
+                          <span>
+                            {appointment
+                              .service
+                              ?.name ||
+                              "Appointment"}
                           </span>
 
                         </div>
 
-                      ))}
+                        <span
+                          className={`provider-appointment-status ${appointment.status?.toLowerCase()}`}
+                        >
+                          {appointment.status ||
+                            "PENDING"}
+                        </span>
 
-                  </div>
-
-                )}
-
-              </div>
-
-              {/* RECENT PATIENTS */}
-
-              <div className="provider-content-card">
-
-                <div className="provider-card-header">
-
-                  <div>
-
-                    <span>
-                      Patients
-                    </span>
-
-                    <h2>
-                      Recent Patients
-                    </h2>
-
-                  </div>
-
-                  <button
-                    type="button"
-                    className="provider-card-action"
-                    onClick={handlePatients}
-                  >
-                    View all
-                  </button>
+                      </div>
+                    ))}
 
                 </div>
+              )}
 
-                {recentPatients.length === 0 ? (
+            </div>
 
-                  <div className="provider-empty-state">
+            {/* RECENT PATIENTS */}
 
-                    <Users size={30} />
+            <div className="provider-content-card">
 
-                    <strong>
-                      No patients yet
-                    </strong>
+              <div className="provider-card-header">
+                <div>
+                  <span>
+                    Patients
+                  </span>
 
-                    <p>
-                      Your recent patients
-                      will appear here.
-                    </p>
+                  <h2>
+                    Recent Patients
+                  </h2>
+                </div>
 
-                  </div>
-
-                ) : (
-
-                  <div className="provider-patient-list">
-
-                    {recentPatients.map(
-                      (patient) => (
-
-                        <div
-                          className="provider-patient-item"
-                          key={patient.id}
-                        >
-
-                          <div className="provider-patient-avatar">
-
-                            <UserRound size={18} />
-
-                          </div>
-
-                          <div>
-
-                            <strong>
-                              {patient.name}
-                            </strong>
-
-                            <span>
-                              {patient.email ||
-                                patient.phone ||
-                                "Patient"}
-                            </span>
-
-                          </div>
-
-                        </div>
-
-                      )
-                    )}
-
-                  </div>
-
-                )}
-
+                <button
+                  type="button"
+                  className="provider-card-action"
+                  onClick={() =>
+                    navigate(
+                      "/provider/patients"
+                    )
+                  }
+                >
+                  View all
+                </button>
               </div>
 
-            </section>
+              {recentPatients.length === 0 ? (
+                <div className="provider-empty-state">
 
-          </>
+                  <Users size={30} />
 
-        )}
+                  <strong>
+                    No patients yet
+                  </strong>
 
-      </main>
+                  <p>
+                    Your recent patients
+                    will appear here.
+                  </p>
 
-      {/* =====================================
-          LOGOUT CONFIRMATION POPUP
-      ===================================== */}
+                </div>
+              ) : (
+                <div className="provider-patient-list">
 
-      {showLogoutPopup && (
+                  {recentPatients.map(
+                    (patient) => (
+                      <div
+                        className="provider-patient-item"
+                        key={patient.id}
+                      >
 
-        <div
-          className="provider-logout-popup-overlay"
-          onClick={handleLogoutCancel}
-        >
+                        <div className="provider-patient-avatar">
+                          <UserRound size={18} />
+                        </div>
 
-          <div
-            className="provider-logout-popup"
-            onClick={(event) =>
-              event.stopPropagation()
-            }
-          >
+                        <div>
+                          <strong>
+                            {patient.name}
+                          </strong>
 
-            <button
-              type="button"
-              className="provider-logout-popup-close"
-              onClick={handleLogoutCancel}
-              aria-label="Close logout confirmation"
-            >
-              <X size={18} />
-            </button>
+                          <span>
+                            {patient.email ||
+                              patient.phone ||
+                              "Patient"}
+                          </span>
+                        </div>
 
-            <div className="provider-logout-popup-icon">
+                      </div>
+                    )
+                  )}
 
-              <AlertTriangle size={25} />
-
-            </div>
-
-            <h3>
-              Are you sure?
-            </h3>
-
-            <p>
-              Are you sure you want to logout
-              from your provider account?
-            </p>
-
-            <div className="provider-logout-popup-actions">
-
-              <button
-                type="button"
-                className="provider-logout-cancel"
-                onClick={handleLogoutCancel}
-              >
-                Cancel
-              </button>
-
-              <button
-                type="button"
-                className="provider-logout-confirm"
-                onClick={handleLogoutConfirm}
-              >
-                <LogOut size={16} />
-
-                Logout
-              </button>
+                </div>
+              )}
 
             </div>
 
-          </div>
-
-        </div>
-
+          </section>
+        </>
       )}
-
     </div>
   );
 }
 
 export default ProviderDashboard;
+

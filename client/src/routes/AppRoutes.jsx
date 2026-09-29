@@ -26,6 +26,12 @@ import Register from "../pages/auth/Register";
 // PATIENT PAGES
 // =========================================
 
+import PatientLayout from "../layouts/PatientLayout";
+import PublicLayout from "../layouts/PublicLayout";
+
+import Chat from "../pages/patient/Chat";
+import ChatWindow from "../pages/patient/ChatWindow";
+
 import PatientDashboard from "../pages/patient/Dashboard";
 import BookAppointment from "../pages/patient/BookAppointment";
 import Appointments from "../pages/patient/Appointments";
@@ -36,7 +42,9 @@ import Profile from "../pages/patient/Profile";
 // =========================================
 // PROVIDER PAGES
 // =========================================
-
+import ProviderChat from "../pages/provider/Chat";
+import ProviderChatWindow from "../pages/provider/ChatWindow";
+import ProviderLayout from "../layouts/ProviderLayout";
 import ProviderDashboard from "../pages/provider/ProviderDashboard";
 import ProviderAppointments from "../pages/provider/Appointments";
 import ProviderAvailability from "../pages/provider/Availability";
@@ -55,6 +63,7 @@ import PaymentCancel from "../pages/payment/PaymentCancel";
 // ADMIN PAGES
 // =========================================
 
+import AdminLayout from "../layouts/AdminLayout";
 import AdminDashboard from "../pages/admin/Dashboard";
 import Branches from "../pages/admin/Branches";
 import AdminServices from "../pages/admin/Services";
@@ -64,6 +73,8 @@ import Availability from "../pages/admin/Availability";
 import Patients from "../pages/admin/Patients";
 import AdminAppointments from "../pages/admin/Appointments";
 import AdminSettings from "../pages/admin/Settings";
+import AdminChat from "../pages/admin/Chat";
+import AdminChatWindow from "../pages/admin/ChatWindow";
 
 function AppRoutes() {
   return (
@@ -72,7 +83,7 @@ function AppRoutes() {
       {/* =========================================
           PUBLIC ROUTES
       ========================================= */}
-
+      <Route element={<PublicLayout />}>
       <Route
         path="/"
         element={<Home />}
@@ -97,7 +108,7 @@ function AppRoutes() {
         path="/contact"
         element={<Contact />}
       />
-
+      </Route>
       {/* =========================================
           AUTH ROUTES
       ========================================= */}
@@ -127,116 +138,112 @@ function AppRoutes() {
       ========================================= */}
 
       <Route
-        path="/patient/dashboard"
         element={
-          <ProtectedRoute allowedRoles={["PATIENT"]}>
-            <PatientDashboard />
-          </ProtectedRoute>
+          <ProtectedRoute
+            allowedRoles={["PATIENT"]}
+          />
         }
-      />
+      >
+        <Route element={<PatientLayout />}>
 
-      <Route
-        path="/patient/book-appointment"
-        element={
-          <ProtectedRoute allowedRoles={["PATIENT"]}>
-            <BookAppointment />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/patient/dashboard"
+            element={<PatientDashboard />}
+          />
 
-      <Route
-        path="/patient/appointments"
-        element={
-          <ProtectedRoute allowedRoles={["PATIENT"]}>
-            <Appointments />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/patient/book-appointment"
+            element={<BookAppointment />}
+          />
 
-      <Route
-        path="/patient/payments"
-        element={
-          <ProtectedRoute allowedRoles={["PATIENT"]}>
-            <Payments />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/patient/appointments"
+            element={<Appointments />}
+          />
 
-      <Route
-        path="/patient/settings"
-        element={
-          <ProtectedRoute allowedRoles={["PATIENT"]}>
-            <Settings />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/patient/payments"
+            element={<Payments />}
+          />
 
-      <Route
-        path="/patient/profile"
-        element={
-          <ProtectedRoute allowedRoles={["PATIENT"]}>
-            <Profile />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/patient/profile"
+            element={<Profile />}
+          />
+
+          <Route
+            path="/patient/settings"
+            element={<Settings />}
+          />
+
+          <Route
+            path="/patient/chat"
+            element={<Chat />}
+          />
+
+          <Route
+            path="/patient/chat/provider/:providerUserId"
+            element={<ChatWindow />}
+          />
+
+        </Route>
+      </Route>
 
       {/* =========================================
           PROVIDER ROUTES
       ========================================= */}
 
       <Route
-        path="/provider/dashboard"
         element={
-          <ProtectedRoute allowedRoles={["PROVIDER"]}>
-            <ProviderDashboard />
-          </ProtectedRoute>
+          <ProtectedRoute
+            allowedRoles={["PROVIDER"]}
+          />
         }
-      />
+      >
+        <Route element={<ProviderLayout />}>
 
-      <Route
-        path="/provider/appointments"
-        element={
-          <ProtectedRoute allowedRoles={["PROVIDER"]}>
-            <ProviderAppointments />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/provider/dashboard"
+            element={<ProviderDashboard />}
+          />
 
-      <Route
-        path="/provider/availability"
-        element={
-          <ProtectedRoute allowedRoles={["PROVIDER"]}>
-            <ProviderAvailability />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/provider/appointments"
+            element={<ProviderAppointments />}
+          />
 
-      <Route
-        path="/provider/patients"
-        element={
-          <ProtectedRoute allowedRoles={["PROVIDER"]}>
-            <ProviderPatients />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/provider/availability"
+            element={<ProviderAvailability />}
+          />
 
-      <Route
-        path="/provider/profile"
-        element={
-          <ProtectedRoute allowedRoles={["PROVIDER"]}>
-            <ProviderProfile />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/provider/patients"
+            element={<ProviderPatients />}
+          />
 
-      <Route
-        path="/provider/settings"
-        element={
-          <ProtectedRoute allowedRoles={["PROVIDER"]}>
-            <ProviderSettings />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/provider/profile"
+            element={<ProviderProfile />}
+          />
+
+          <Route
+            path="/provider/settings"
+            element={<ProviderSettings />}
+          />
+
+          <Route
+            path="/provider/chat"
+            element={<ProviderChat />}
+          />
+
+          <Route
+            path="/provider/chat/user/:patientUserId"
+            element={<ProviderChatWindow />}
+          />
+
+        </Route>
+      </Route>
 
       {/* =========================================
           PAYMENT ROUTES
@@ -245,7 +252,9 @@ function AppRoutes() {
       <Route
         path="/payment/success"
         element={
-          <ProtectedRoute allowedRoles={["PATIENT"]}>
+          <ProtectedRoute
+            allowedRoles={["PATIENT"]}
+          >
             <PaymentSuccess />
           </ProtectedRoute>
         }
@@ -254,7 +263,9 @@ function AppRoutes() {
       <Route
         path="/payment/cancel"
         element={
-          <ProtectedRoute allowedRoles={["PATIENT"]}>
+          <ProtectedRoute
+            allowedRoles={["PATIENT"]}
+          >
             <PaymentCancel />
           </ProtectedRoute>
         }
@@ -265,103 +276,71 @@ function AppRoutes() {
       ========================================= */}
 
       <Route
-        path="/admin/dashboard"
         element={
           <ProtectedRoute
             allowedRoles={["ORGANIZATION_ADMIN"]}
-          >
-            <AdminDashboard />
-          </ProtectedRoute>
+          />
         }
-      />
+      >
+        <Route element={<AdminLayout />}>
 
-      <Route
-        path="/admin/branches"
-        element={
-          <ProtectedRoute
-            allowedRoles={["ORGANIZATION_ADMIN"]}
-          >
-            <Branches />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/admin/dashboard"
+            element={<AdminDashboard />}
+          />
 
-      <Route
-        path="/admin/services"
-        element={
-          <ProtectedRoute
-            allowedRoles={["ORGANIZATION_ADMIN"]}
-          >
-            <AdminServices />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/admin/branches"
+            element={<Branches />}
+          />
 
-      <Route
-        path="/admin/providers"
-        element={
-          <ProtectedRoute
-            allowedRoles={["ORGANIZATION_ADMIN"]}
-          >
-            <AdminProviders />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/admin/services"
+            element={<AdminServices />}
+          />
 
-      <Route
-        path="/admin/provider-services"
-        element={
-          <ProtectedRoute
-            allowedRoles={["ORGANIZATION_ADMIN"]}
-          >
-            <ProviderServices />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/admin/providers"
+            element={<AdminProviders />}
+          />
 
-      <Route
-        path="/admin/availability"
-        element={
-          <ProtectedRoute
-            allowedRoles={["ORGANIZATION_ADMIN"]}
-          >
-            <Availability />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/admin/provider-services"
+            element={<ProviderServices />}
+          />
 
-      <Route
-        path="/admin/patients"
-        element={
-          <ProtectedRoute
-            allowedRoles={["ORGANIZATION_ADMIN"]}
-          >
-            <Patients />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/admin/availability"
+            element={<Availability />}
+          />
 
-      <Route
-        path="/admin/appointments"
-        element={
-          <ProtectedRoute
-            allowedRoles={["ORGANIZATION_ADMIN"]}
-          >
-            <AdminAppointments />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/admin/patients"
+            element={<Patients />}
+          />
 
-      <Route
-        path="/admin/settings"
-        element={
-          <ProtectedRoute
-            allowedRoles={["ORGANIZATION_ADMIN"]}
-          >
-            <AdminSettings />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/admin/appointments"
+            element={<AdminAppointments />}
+          />
+
+          <Route
+            path="/admin/chat"
+            element={<AdminChat />}
+          />
+
+          <Route
+            path="/admin/chat/provider/:providerUserId"
+            element={<AdminChatWindow />}
+          />
+
+          <Route
+            path="/admin/settings"
+            element={<AdminSettings />}
+          />
+
+        </Route>
+      </Route>
 
     </Routes>
   );

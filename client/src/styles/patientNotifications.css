@@ -1,0 +1,485 @@
+
+/* =========================================
+   PATIENT NOTIFICATION BUTTON
+========================================= */
+
+.patient-notification-wrapper {
+  position: relative;
+  margin-right: 24px;
+}
+
+.patient-notification-button {
+  position: relative;
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #dfe6ef;
+  border-radius: 12px;
+
+  background: #ffffff;
+  color: #52657d;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.patient-notification-button:hover,
+.patient-notification-button.active {
+  border-color: #c8daf7;
+  background: #f5f9ff;
+  color: #2563eb;
+
+  box-shadow:
+    0 5px 16px rgba(37, 99, 235, 0.1);
+}
+
+.patient-notification-button:hover {
+  transform: translateY(-1px);
+}
+
+/* =========================================
+   NOTIFICATION BADGE
+========================================= */
+
+.patient-notification-dot {
+  position: absolute !important;
+  top: -7px !important;
+  right: -7px !important;
+  min-width: 21px !important;
+  width: auto !important;
+  height: 21px !important;
+  padding: 0 5px !important;
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 2px solid #ffffff !important;
+  border-radius: 999px !important;
+  background: #2563eb !important;
+  color: #ffffff !important;
+  font-family: Arial, sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  box-shadow:
+    0 2px 7px rgba(37, 99, 235, 0.28) !important;
+  z-index: 20 !important;
+  pointer-events: none !important;
+}
+
+
+
+
+/* =========================================
+   NOTIFICATION DROPDOWN
+========================================= */
+
+.patient-notification-dropdown {
+  position: absolute;
+
+  top: calc(100% + 12px);
+  right: 0;
+
+  z-index: 1000;
+
+  width: 380px;
+
+  overflow: hidden;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 17px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 24px 50px rgba(23, 45, 77, 0.13),
+    0 7px 18px rgba(23, 45, 77, 0.07);
+
+  animation:
+    patientNotificationDropdownIn 0.18s ease;
+}
+
+@keyframes patientNotificationDropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-7px) scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================
+   DROPDOWN HEADER
+========================================= */
+
+.patient-notification-header {
+  min-height: 76px;
+
+  padding: 17px 19px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  border-bottom: 1px solid #edf1f5;
+}
+
+.patient-notification-header > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.patient-notification-header span {
+  color: #172d4d;
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.patient-notification-header strong {
+  color: #8995a5;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* =========================================
+   MARK ALL BUTTON
+========================================= */
+
+.patient-mark-all-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  padding: 8px 10px;
+
+  border: 1px solid #dce9fb;
+  border-radius: 8px;
+
+  background: #eff6ff;
+  color: #2563eb;
+
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.patient-mark-all-button:hover {
+  border-color: #c4daf9;
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+/* =========================================
+   NOTIFICATION LIST
+========================================= */
+
+.patient-notification-list {
+  max-height: 410px;
+  overflow-y: auto;
+}
+
+.patient-notification-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.patient-notification-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.patient-notification-list::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #d9e0e8;
+}
+
+/* =========================================
+   NOTIFICATION ITEM
+========================================= */
+
+.patient-notification-item {
+  position: relative;
+
+  width: 100%;
+
+  padding: 16px 18px;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 11px;
+
+  border: none;
+  border-bottom: 1px solid #f0f3f6;
+
+  background: #ffffff;
+
+  text-align: left;
+
+  font-family: inherit;
+}
+
+.patient-notification-item:last-child {
+  border-bottom: none;
+}
+
+.patient-notification-item.unread {
+  background: #f8fbff;
+}
+
+.patient-notification-item.read {
+  background: #ffffff;
+  opacity: 0.82;
+}
+
+.patient-notification-item:hover {
+  background: #f4f8fd;
+}
+
+/* =========================================
+   NOTIFICATION ICON
+========================================= */
+
+.patient-notification-item-icon {
+  flex: 0 0 auto;
+
+  width: 36px;
+  height: 36px;
+
+  margin-top: 1px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.patient-notification-item.read
+  .patient-notification-item-icon {
+  background: #f1f4f7;
+  color: #7d8998;
+}
+
+/* =========================================
+   NOTIFICATION CONTENT
+========================================= */
+
+.patient-notification-item-content {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.patient-notification-item-content strong {
+  overflow: hidden;
+
+  color: #26364c;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.patient-notification-item-content p {
+  margin: 0;
+
+  color: #697b91;
+
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.patient-notification-item-content > span {
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+
+  color: #9aa5b3;
+
+  font-size: 10px;
+}
+
+/* =========================================
+   READ / UNREAD ACTION
+========================================= */
+
+.patient-notification-actions {
+  display: flex;
+
+  margin-top: 3px;
+}
+
+.patient-notification-actions button {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 4px;
+
+  padding: 4px 0;
+
+  border: none;
+
+  background: transparent;
+  color: #2563eb;
+
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.patient-notification-actions button:hover {
+  color: #1d4ed8;
+  opacity: 0.8;
+}
+
+/* =========================================
+   UNREAD DOT
+========================================= */
+
+.patient-notification-unread-dot {
+  flex: 0 0 auto;
+
+  width: 8px;
+  height: 8px;
+
+  margin-top: 6px;
+
+  border-radius: 50%;
+
+  background: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.patient-notification-empty {
+  min-height: 230px;
+
+  padding: 32px 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  text-align: center;
+}
+
+.patient-notification-empty-icon {
+  width: 50px;
+  height: 50px;
+
+  margin-bottom: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.patient-notification-empty strong {
+  margin-bottom: 4px;
+
+  color: #26364c;
+
+  font-size: 13px;
+}
+
+.patient-notification-empty span {
+  color: #8b97a7;
+
+  font-size: 11px;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 600px) {
+  .patient-notification-wrapper {
+    margin-right: 12px;
+  }
+
+  .patient-notification-dropdown {
+    position: fixed;
+
+    top: 70px;
+    right: 12px;
+    left: 12px;
+
+    width: auto;
+    max-width: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .patient-notification-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .patient-notification-dropdown {
+    top: 64px;
+  }
+
+  .patient-notification-header {
+    padding: 14px;
+  }
+
+  .patient-notification-item {
+    padding: 14px;
+  }
+}
+
